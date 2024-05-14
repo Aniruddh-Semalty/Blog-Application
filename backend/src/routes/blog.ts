@@ -121,6 +121,7 @@ blogRouter.post("/", async(c) => {
                 id:id,
             },
             select:{
+              id:true,
               content:true,
               title:true,
               author:{
