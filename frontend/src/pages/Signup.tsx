@@ -1,4 +1,3 @@
-import React from 'react'
 
 import SignupQuote from "../components/SignupQuote"
 import AuthComponent from '../components/AuthComponent'

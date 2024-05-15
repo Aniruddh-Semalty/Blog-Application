@@ -17,10 +17,14 @@ const blogSlice=createSlice({
         cacheTheBlog:(state,action:PayloadAction<blogsType>)=>{
             state.clickedBlogs.push(action.payload);
         
+        },
+        clearState:(state)=>{
+            state.blogs=null;
+            state.clickedBlogs=[];
         }
     }
 
 });
 
-export const {getBlogs,cacheTheBlog}=blogSlice.actions;
+export const {getBlogs,cacheTheBlog,clearState}=blogSlice.actions;
 export default blogSlice.reducer;

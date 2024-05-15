@@ -1,5 +1,5 @@
 export interface blogsType{
-    id:number;
+    id:string;
     content:string;
     title:string;
     author:{

@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -9,22 +9,20 @@ import { Avatar } from "../components/BlogCard";
 import { FullBlogSkeleton } from "../components/FullBlogSkeleton";
 import { useDispatch } from "react-redux";
 import { cacheTheBlog } from "../utils/blogSlice";
-interface blogType {
-  content: string;
-  title: string;
-  author: {
-    name: string;
-  };
-  id: number;
-}
+
+import { BlogState } from "../utils/type";
+import { blogsType } from "../utils/type";
+import { useAuth } from "../hooks/useAuth";
+
 export const Blog = () => {
   const [loading, setLoading] = useState<Boolean>(true);
   const dispatch = useDispatch();
-  const [blog, setBlog] = useState<blogType>({});
-  const cachedBlogs = useSelector((store) => store.blog.clickedBlogs);
+  const [blog, setBlog] = useState<Partial<blogsType>>({});
 
-  const { id } = useParams();
+  const cachedBlogs = useSelector((store:{blog:BlogState}) => store.blog.clickedBlogs);
 
+  const { id } = useParams<{id:string}>();
+  useAuth();
   const getBlog = async () => {
     const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
       headers: {
@@ -33,31 +31,25 @@ export const Blog = () => {
     });
     setBlog(response.data.blog);
     setLoading(false);
-    for (let i = 0; i < cachedBlogs.length; i++) {
-      if (cachedBlogs[i] == response.data.blog.id) return;
+    const isCached = cachedBlogs.some((cachedBlog) => cachedBlog.id === id);
+    if (!isCached) {
+      dispatch(cacheTheBlog(response.data.blog));
     }
-    dispatch(cacheTheBlog(response.data.blog));
   };
   const setCachedBlog = () => {
-    let filterBlog = null;
-    for (let i = 0; i < cachedBlogs.length; i++) {
-      if (cachedBlogs[i].id === id) {
-        filterBlog = cachedBlogs[i];
-        break;
-      }
-    }
-    if (filterBlog != null) {
-      setBlog(filterBlog);
+    const cachedBlog = cachedBlogs.find((cachedBlog) => cachedBlog.id === id);
+    if (cachedBlog) {
+      setBlog(cachedBlog);
       setLoading(false);
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
   useEffect(() => {
+    
     let isAlreadyVisited = setCachedBlog();
     if (!isAlreadyVisited) getBlog();
-  }, []);
+  }, [id]);
   if (loading) {
     return (
       <>
@@ -80,10 +72,10 @@ export const Blog = () => {
             <div className="pb-2 text-gray-500">Author</div>
             <div className="flex justify-center items-center">
               <div className="">
-                <Avatar name={blog.author.name} size="big" />
+                <Avatar name={blog.author?.name} size="big" />
               </div>
               <div className="col-span-3 pl-2 font-bold text-xl p-2">
-                {blog.author.name}
+                {blog.author?.name}
               </div>
             </div>
           </div>

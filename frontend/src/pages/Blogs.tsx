@@ -1,11 +1,17 @@
-import React from "react";
+
 import { BlogCard } from "../components/BlogCard";
 import { AppBar } from "../components/AppBar";
 import { useBlogs } from "../hooks/useBlogs";
 
 import { BlogCardSkeleton } from "../components/BlogCardSkeleton";
+import { blogsType } from "../utils/type";
+import { useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 const Blogs = () => {
   const {loading,blogs}=useBlogs();
+
+    useAuth();
+ 
 
   if(loading)
     {
@@ -29,10 +35,10 @@ const Blogs = () => {
       <div className="flex justify-center">
         <div className="max-w-2xl">
           
-          {blogs.map((blog)=>(
+          {blogs.map((blog:blogsType)=>(
           <div className="cursor-pointer">
             <BlogCard
-              id={blog.id}
+              id={blog.id.toString()}
               authorName={blog.author.name}
               title={blog.title}
               content={blog.content}

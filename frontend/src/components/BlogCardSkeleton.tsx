@@ -1,4 +1,4 @@
-import { Avatar, Circle } from "./BlogCard"
+
 
 export const BlogCardSkeleton=()=>{
     return (<div className="mt-14  animate-pulse  flex flex-col items-center">

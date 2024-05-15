@@ -1,13 +1,15 @@
-import React from "react";
+
 import { useState } from "react";
 import { SignupInput } from "@aniruddhsemalty/blog-common";
-import {SigninInput} from "@aniruddhsemalty/blog-common"
-import { Link, Navigate } from "react-router-dom";
+import { ChangeEvent } from "react";
+import { Link} from "react-router-dom";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
+import { loginUser } from "../utils/userSlice";
 const AuthComponent = ({ type }: { type: "signup" | "signin" }) => {
-  const [isSigninForm, setIsSigninForm] = useState(false);
+  const dispatch=useDispatch();
   const [postInputs, setPostInputs] = useState<SignupInput>({
     name: "",
    password:"",
@@ -22,6 +24,8 @@ const AuthComponent = ({ type }: { type: "signup" | "signin" }) => {
 
     
     localStorage.setItem("token",jwt);
+    dispatch(loginUser(true));
+  
     navigate("/blogs");
     }
     catch(e)
@@ -98,7 +102,7 @@ const AuthComponent = ({ type }: { type: "signup" | "signin" }) => {
 interface labelledInputTypes {
   label: string;
   placeholder: string;
-  onChange: (e: ChangeEventHandler) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
 }
 function LabelledInput({
