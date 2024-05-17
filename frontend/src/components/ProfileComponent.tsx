@@ -1,0 +1,68 @@
+import React from 'react'
+import { AppBar } from './AppBar'
+import { useState } from 'react'
+import { Avatar, BlogCard } from './BlogCard';
+import { useProfile } from '../hooks/useProfile';
+
+const ProfileComponent= () => {
+  const {user,posts}=useProfile();
+  
+  const [postView,setPostView]=useState<Boolean>(true);
+  const [aboutView,setAboutView]=useState<Boolean>(false);
+
+
+  return user&&posts&&(
+    <>
+    <AppBar/>
+    
+    <div className='p-16 grid grid-cols-12'>
+      <div className='col-span-9'>
+      <div className='text-5xl font-bold col-span-9'>
+       {user?.name}
+      </div>
+      <div className='flex border-b col-span-9 pb-4 '>
+      <div className='mt-8 mr-8 cursor-pointer ' onClick={()=>{setPostView(true),setAboutView(false)}}>Posts</div>
+      <div className='mt-8 ml-8 cursor-pointer' onClick={()=>{setAboutView(true);setPostView(false)}}>About</div>
+      </div>
+      <div className=' mt-8'>
+        {postView?<Posts posts={posts} user={user}/>:<About/>}
+      </div>
+      </div>
+     <div className=' ml-6 col-span-3'>
+     
+        <div className='flex flex-col justify-center items-center'>
+        <Avatar name={user?.name} size="extraLarge"/>
+        <div className='mt-4 font-semibold'>{user?.name}</div>
+        <div className='mt-4 cursor-pointer text-xs text-green-600'>Edit profile</div>
+        </div>
+      </div >
+     
+    </div>
+
+    </>
+  )
+}
+
+
+const Posts=({posts,user})=>{
+  return <div>
+    {
+      posts.map((post)=>{
+        return <BlogCard id={post.id} 
+        authorName={user?.name}
+        title={post.title}
+        content={post.content}
+        publishedDate={"2022 janusary"}
+        
+        
+        />
+      })
+    }
+  </div>
+}
+
+const About=()=>{
+  return <div>About</div>
+}
+
+export default ProfileComponent

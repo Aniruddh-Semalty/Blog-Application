@@ -39,11 +39,11 @@ export const BlogCard=({
     </Link>
 }
 
-export const Avatar=({name,size="small"}:{name:string,size:"big"|"small"})=>{
+export const Avatar=({name,size="small"}:{name:string,size:"big"|"small"|"extraLarge"})=>{
     return (
         
-<div className={`relative inline-flex items-center justify-center ${size==="small"? "w-5 h-5":"w-8 h-8"} overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 `}>
-    <span className={`font-medium ${size==="small"?"text-xs":"text-md"}  text-gray-600 dark:text-gray-300`}>{name[0]}</span>
+<div className={`relative inline-flex items-center justify-center ${size==="small"? "w-5 h-5":(size==="big"?"w-8 h-8":"w-24 h-24")} overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 `}>
+    <span className={`font-medium ${size==="small"?"text-xs":(size==="big"?"text-md":"text-2xl")}  text-gray-600 dark:text-gray-300`}>{name[0]}</span>
 </div>
 
     )

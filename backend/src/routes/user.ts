@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import {decode,verify,sign} from "hono/jwt";
+import {verify,sign} from "hono/jwt";
 import { signinInput, signupInput } from "@aniruddhsemalty/blog-common";
 
 export const userRouter=new Hono<
@@ -52,6 +52,49 @@ userRouter.post("/signup", async (c) => {
     })
   }
   });
+
+  userRouter.get("/profile",async(c)=>{
+   
+      const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+      }).$extends(withAccelerate());
+
+      const token=c.req.header("Authorization")||"";
+      const verifiedUser= await verify(token,c.env.JWT_SECRET);
+      if(verifiedUser)
+        {
+          const user=await prisma.user.findUnique({
+            where:{
+              id:verifiedUser.id,
+            },
+            select:{
+              id: true,
+              name: true,
+            }
+          })
+          if(!user){
+            c.status(403);
+            return c.json({error:"User not found"});
+          }
+
+          const posts=await prisma.post.findMany({
+            where: {
+              authorId:verifiedUser.id
+            },
+          
+          })
+
+          return c.json({
+            user,posts
+          })
+
+        }
+        else {
+          c.status(403);
+          return c.json({error:"Invalid user"});
+        }
+  })
+
   
   userRouter.post("/signin", async(c) => {
     const prisma = new PrismaClient({
