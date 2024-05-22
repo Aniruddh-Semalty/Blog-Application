@@ -105,7 +105,7 @@ interface labelledInputTypes {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
 }
-function LabelledInput({
+export function LabelledInput({
   label,
   placeholder,
   onChange,

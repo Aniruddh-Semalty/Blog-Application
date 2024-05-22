@@ -38,7 +38,7 @@ userRouter.post("/signup", async (c) => {
   
  
   
-    console.log(c.env.JWT_SECRET);
+   
     const token=await sign({id:user.id},c.env.JWT_SECRET);
     return c.json({
       jwt:token,
@@ -70,6 +70,7 @@ userRouter.post("/signup", async (c) => {
             select:{
               id: true,
               name: true,
+              about:true,
             }
           })
           if(!user){

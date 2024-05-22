@@ -25,7 +25,7 @@ export type CreateBlogInput = z.infer<typeof createBlogInput>;
 export const updateBlogInput = z.object({
   title: z.string(),
   content: z.string(),
-  id: z.number(),
+  id: z.string(),
 });
 
 export type UpadateBlogInput = z.infer<typeof updateBlogInput>;

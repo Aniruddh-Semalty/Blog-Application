@@ -23,7 +23,7 @@ export const AppBar=()=>{
                 handleLogout();
             }
             else {
-                navigate("/sigin");
+                navigate("/signin");
             }
 
     }

@@ -4,6 +4,7 @@ const Profile = () => {
   return (
     <div>
         <ProfileComponent/>
+        
     </div>
   )
 }

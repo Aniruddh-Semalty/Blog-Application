@@ -63,27 +63,36 @@ export const Blog = () => {
       <div>
         <AppBar />
       </div>
-      <div className="p-20">
-        <div className="grid grid-cols-12">
-          <div className="col-span-9 text-5xl font-extrabold pb-10 ">
-            {blog.title}
-          </div>
-          <div>
-            <div className="pb-2 text-gray-500">Author</div>
-            <div className="flex justify-center items-center">
-              <div className="">
-                <Avatar name={blog.author?.name} size="big" />
-              </div>
-              <div className="col-span-3 pl-2 font-bold text-xl p-2">
-                {blog.author?.name}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-12">
-          <div className="col-span-8 text-gray-500 text-lg">{blog.content}</div>
-        </div>
+      <div>
+        <DetailedBlog blog={blog}/>
       </div>
+     
     </>
   );
 };
+
+const DetailedBlog=({blog})=>{
+  return (
+    <div className="p-20">
+    <div className="grid grid-cols-12">
+      <div className="col-span-9 text-5xl font-extrabold pb-10 ">
+        {blog.title}
+      </div>
+      <div>
+        <div className="pb-2 text-gray-500">Author</div>
+        <div className="flex justify-center items-center">
+          <div className="">
+            <Avatar name={blog.author?.name} size="big" />
+          </div>
+          <div className="col-span-3 pl-2 font-bold text-xl p-2">
+            {blog.author?.name}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="grid grid-cols-12">
+      <div className="col-span-8 text-gray-500 text-lg">{blog.content}</div>
+    </div>
+  </div>
+  )
+}
