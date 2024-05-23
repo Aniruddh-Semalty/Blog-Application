@@ -84,7 +84,7 @@ const Posts=({posts,user})=>{
 }
 
 const About=({user})=>{
-  return <div>{user?.about}</div>
+  return <div className='font-semibold text-lg font-serif pb-4'>{user?.about}</div>
 }
 
 export default ProfileComponent

@@ -14,13 +14,36 @@ model User {
   password String
   about    String?
   post     Post[]
-}
+ likedPosts    LikedPost[]
+  dislikedPosts DislikedPost[]
+  }
 
 model Post {
   id        String  @id @default(uuid())
   title     String
   content   String
+  views     Int?
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  String
+  likedBy    LikedPost[]
+  dislikedBy DislikedPost[]
+  
+}
+model LikedPost {
+  userId String
+  postId String
+  user   User @relation(fields: [userId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+  
+  @@id([userId, postId])
+}
+
+model DislikedPost {
+  userId String
+  postId String
+  user   User @relation(fields: [userId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+  
+  @@id([userId, postId])
 }

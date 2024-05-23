@@ -95,7 +95,35 @@ userRouter.post("/signup", async (c) => {
           return c.json({error:"Invalid user"});
         }
   })
+  userRouter.put("/update",async(c)=>{
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const body=await c.req.json();
+    const token=c.req.header("Authorization")||"";
+    const verfiedUser=await verify(token,c.env.JWT_SECRET);
+    console.log(body.username);
+    console.log(body.about);
+    if(verfiedUser)
+      {
+    const user=await prisma.user.update({
+      where:{
+        id:verfiedUser.id,
 
+      },
+      data:{
+        name:body.username,
+        about:body.about,
+      }
+    })
+
+    return c.json({msg:"Profile updated successfully"});
+  }
+  else {
+    c.status(403);
+    return c.json({error:"Invalid user"});
+  }
+  })
   
   userRouter.post("/signin", async(c) => {
     const prisma = new PrismaClient({
